@@ -1,6 +1,5 @@
 #!/usr/bin/python
-import pprint
-import os
+
 import ConfigParser
 
 
@@ -13,7 +12,7 @@ class ConfigurationFileProcess(object):
         :rtype: Dictionary containing data for each host, extracted from configuration file
         """
         config = ConfigParser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), conf_file))
+        config.read(conf_file)
 
         dictionary = {}
         for section_name in config.sections():
