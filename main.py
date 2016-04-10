@@ -1,5 +1,5 @@
-import sys
 import pprint
+import pssh.utils
 from initializationDataProcessing import inputValidation, configurationFileProcess
 
 from pssh.pssh_client import ParallelSSHClient
@@ -12,13 +12,18 @@ if __name__ == '__main__':
 
     # instantiate configuration file process obj
     configurationFileProcess_obj = configurationFileProcess.ConfigurationFileProcess()
-    pprint.pprint(configurationFileProcess_obj.process_conf_file(sys.argv[1]))
-    exit(0)
+    #pprint.pprint(configurationFileProcess_obj.process_conf_file(sys.argv[1]))
 
-    client = ParallelSSHClient('host', user='root')
+    client = ParallelSSHClient(['127.0.0.1'], user='tinyos', password='K@potes1983', port=19013)
     try:
-        output = client.run_command('ls -la', sudo=True, stop_on_errors=False)
+        output = client.run_command('ls -ltrh /home/tinyos', sudo=True, stop_on_errors=False)
+        test = client.get_output()
         pprint.pprint(output)
+        for host in output:
+            for line in output[host]['stdout']:
+                print line
+        pprint.pprint(test)
+        del client
         exit(0)
     except(AuthenticationException, UnknownHostException, ConnectionErrorException) as e:
         print e
